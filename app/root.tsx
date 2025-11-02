@@ -9,6 +9,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { usePuterStore } from "./lib/puter";
+import { useEffect } from "react";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,6 +26,14 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  // Memanggil fungsi init dari usePuterStore untuk mengecek apakah fungsi Puter ada atau tidak
+  const {init} = usePuterStore();
+
+  // Menginisiasikan dan mengecek referensi init
+  useEffect(() => {
+    init() // berfungsi untuk mengaktifkan fitur yang ada pada Puter seperti auth
+  }, [init]);
+  
   return (
     <html lang="en">
       <head>
@@ -33,6 +43,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        {/* script untuk load puter.js */}
+        <script src="https://js.puter.com/v2/"></script>
         {children}
         <ScrollRestoration />
         <Scripts />
